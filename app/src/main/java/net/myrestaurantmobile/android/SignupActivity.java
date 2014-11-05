@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,11 +32,16 @@ import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -159,7 +165,8 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(email, name);
-            mAuthTask.execute("REST URI HEre");
+            //mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers?email="+email+"name="+name);
+            mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers");
         }
     }
     private boolean isEmailValid(String email) {
@@ -274,16 +281,28 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             this.mName = name;
         }
 
-
         @Override
         protected String doInBackground(String... uri) {
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
+            //HttpParams httpParams;
+            //httpParams.setParameter("name", this.mName);
+            //httpParams.setParameter("email", this.mEmail);
+            HttpPost mPost = new HttpPost(uri[0]);
+
+            List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+            pairs.add(new BasicNameValuePair("name", this.mName));
+            pairs.add(new BasicNameValuePair("email", this.mEmail));
+
             String responseString = null;
             try {
-                response = httpclient.execute(new HttpGet(""));
+                //response = httpclient.execute(new HttpGet(uri[0]));
+                //response = httpclient.execute(new HttpPost(uri[0])).setParams(httpParams);
+                mPost.setEntity(new UrlEncodedFormEntity(pairs));
+                response = httpclient.execute(mPost);
                 StatusLine statusLine = response.getStatusLine();
                 if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    Log.d("getStatusCode: ", "Got Back with 200!!!");
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     response.getEntity().writeTo(out);
                     out.close();
@@ -294,8 +313,10 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
                     throw new IOException(statusLine.getReasonPhrase());
                 }
             } catch (ClientProtocolException e) {
+                Log.d("ClientProtocolException: ", e.getMessage());
                 //TODO Handle problems..
             } catch (IOException e) {
+                Log.d("IOException: ", e.getMessage());
                 //TODO Handle problems..
             }
             return responseString;
@@ -304,6 +325,8 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
+            Log.d("onPostExecute: ", "Got here");
 
             mAuthTask = null;
             showProgress(false);
