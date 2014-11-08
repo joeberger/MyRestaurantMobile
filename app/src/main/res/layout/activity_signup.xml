@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="net.myrestaurantmobile.android.SignupActivity"
-    android:theme="@style/AppTheme">
+    tools:context="net.myrestaurantmobile.android.SignupActivity">
+    <!--android:theme="@style/AppTheme">-->
 
     <ImageView
         android:layout_width="match_parent"
@@ -38,6 +38,18 @@
                 android:orientation="vertical"
                 android:weightSum="1">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Sign Up To Receive Our  Weekly Deals"
+                    android:id="@+id/textView"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="60dp"
+                    android:paddingTop="20dp"
+                    android:textColor="#ffffffff"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
@@ -49,7 +61,13 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:inputType="textPersonName"
-                    android:theme="@android:style/Theme.DeviceDefault.InputMethod" />
+                    android:theme="@android:style/Theme.DeviceDefault.InputMethod"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:background="#ffffffff"
+                    android:layout_margin="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp" />
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
@@ -58,7 +76,11 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:singleLine="true"/>
+                    android:singleLine="true"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_margin="10dp"
+                    android:background="#ffffffff" />
 
                 <!--EditText
                     android:id="@+id/password"
@@ -99,9 +121,6 @@
                     android:onClick="onClick" />
             </LinearLayout>
     </ScrollView>
-
-
-
 </RelativeLayout>
 
 
