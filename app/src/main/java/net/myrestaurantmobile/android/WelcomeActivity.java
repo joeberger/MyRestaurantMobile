@@ -157,8 +157,8 @@ public class WelcomeActivity extends Activity {
             Intent i = new Intent();
             i.setComponent(new ComponentName("net.myrestaurantmobile.android", "net.myrestaurantmobile.android.SignupActivity"));
             i.setAction("android.intent.action.MAIN");
-            i.addCategory("android.intent.category.LAUNCHER");
-            i.addCategory("android.intent.category.DEFAULT");
+            //i.addCategory("android.intent.category.LAUNCHER");
+            //i.addCategory("android.intent.category.DEFAULT");
             v.getContext().startActivity(i);
         }
     };

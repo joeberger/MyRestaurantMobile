@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="net.myrestaurantmobile.android.SignupActivity">
+    tools:context=".SignupActivity">
     <!--android:theme="@style/AppTheme">-->
 
     <ImageView
@@ -42,7 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Sign Up To Receive Our  Weekly Deals"
+                    android:text="Sign Up Now and Get 5% Off Your Next Check"
                     android:id="@+id/textView"
                     android:layout_gravity="center_horizontal"
                     android:paddingBottom="60dp"
