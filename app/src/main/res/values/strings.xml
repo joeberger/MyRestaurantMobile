@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Piccolo Trattoria</string>
+    <string name="app_name">We Reward You</string>
     <string name="signup_button">Sign Up</string>
     <string name="signupButtonDescription">Signup Button</string>
     <string name="name">Your Name</string>
     <string name="email">Your Email</string>
     <string name="error_invalid_name">Please enter a valid name</string>
     <string name="welcome_note">Get Our Great Weekly Deals and Specials</string>
+    <string name="title_activity_thank_you">ThankYou</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

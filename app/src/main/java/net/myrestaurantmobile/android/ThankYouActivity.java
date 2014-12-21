@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import net.myrestaurantmobile.android.util.SystemUiHider;
@@ -23,7 +23,7 @@ import java.net.URL;
  *
  * @see SystemUiHider
  */
-public class WelcomeActivity extends Activity {
+public class ThankYouActivity extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -50,31 +50,21 @@ public class WelcomeActivity extends Activity {
     /**
      * The instance of the {@link SystemUiHider} for this activity.
      */
-    //private SystemUiHider mSystemUiHider;
     private String resourceUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_thank_you);
         resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
         loadResources();
-
-        final View contentView = findViewById(R.id.fullscreen_content);
-        final View emailButton =  findViewById(R.id.enter_email_button);
-
-        contentView.setOnClickListener(mClickListener);
-        emailButton.setOnClickListener(mClickListener);
-
-        contentView.setOnLongClickListener(mLongClickListener);
-        emailButton.setOnLongClickListener(mLongClickListener);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        // TODO: Check if resource URL was changed. Reload the
+        goToWelcome();
     }
 
     private void loadResources(){
@@ -86,11 +76,11 @@ public class WelcomeActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                InputStream in = new URL(resourceUrl + "SplashScreen.gif").openStream();
+                InputStream in = new URL(resourceUrl + "ThankYou.gif").openStream();
                 img = BitmapFactory.decodeStream(in);
                 in.close();
             } catch (Exception e) {
-                Log.d("WelcomeActivity", " error");
+                Log.d("ThankYouActivity", " error");
             }
             return null;
         }
@@ -104,34 +94,16 @@ public class WelcomeActivity extends Activity {
         }
     }
 
-    ImageView.OnClickListener mClickListener = new ImageView.OnClickListener() {
-        @Override
-        public void onClick(View v) {
+    protected void goToWelcome(){
+        new CountDownTimer(4000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
 
-            Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-            startActivity(i);
-            finish();
-
-            /*Intent i = new Intent();
-            i.setComponent(new ComponentName("net.myrestaurantmobile.android", "net.myrestaurantmobile.android.SignupActivity"));
-            i.setAction("android.intent.action.MAIN");
-            //i.addCategory("android.intent.category.LAUNCHER");
-            //i.addCategory("android.intent.category.DEFAULT");
-            v.getContext().startActivity(i);*/
-        }
-    };
-
-    ImageView.OnLongClickListener mLongClickListener = new ImageView.OnLongClickListener() {
-        @Override
-        public  boolean onLongClick(View v) {
-            Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-            startActivity(i);
-
-            /*Intent i = new Intent();
-            i.setComponent(new ComponentName("net.myrestaurantmobile.android", "net.myrestaurantmobile.android.SettingsActivity"));
-            i.setAction("android.intent.action.MAIN");
-            v.getContext().startActivity(i);*/
-            return true;
-        }
-    };
+            public void onFinish() {
+                Intent i = new Intent(getApplicationContext(), WelcomeActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }.start();
+    }
 }

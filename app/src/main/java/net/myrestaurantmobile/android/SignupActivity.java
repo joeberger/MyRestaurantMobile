@@ -5,30 +5,26 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -37,14 +33,14 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpParams;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,13 +52,6 @@ import java.util.List;
 public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
@@ -73,11 +62,15 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
     private EditText mNameView;
     private View mProgressView;
     private View mLoginFormView;
+    private String resourceUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
+        loadResources();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -96,18 +89,78 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             }
         });*/
 
-        ImageButton mEmailSignInButton = (ImageButton) findViewById(R.id.email_sign_in_button);
+        /*ImageView mEmailSignInButton = (ImageView) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
-        });
+        });*/
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        //findViewById(R.id.imageButton).setOnClickListener(mClickListener);
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        // TODO: Check if resource URL was changed. Reload the
+    }
+
+    protected void showThankyou(){
+
+        Intent i = new Intent(getApplicationContext(), ThankYouActivity.class);
+        startActivity(i);
+        finish();
+
+
+        /*Intent i = new Intent();
+        i.setComponent(new ComponentName("net.myrestaurantmobile.android", "net.myrestaurantmobile.android.ThankYouActivity"));
+        i.setAction("android.intent.action.MAIN");
+        //i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.startActivity(i);*/
+        //finish();
+    }
+
+    private void loadResources(){
+        new LoadResources().execute();
+    }
+
+    public void onClick(View view) {
+        attemptLogin();
+    }
+
+    private class LoadResources extends AsyncTask<Void, Void, Void> {
+        Bitmap img;
+        Bitmap btn;
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                InputStream in = new URL(resourceUrl + "FormBackground.gif").openStream();
+                img = BitmapFactory.decodeStream(in);
+                in = new URL(resourceUrl + "EnterEmailButton.gif").openStream();
+                btn = BitmapFactory.decodeStream(in);
+                in.close();
+            } catch (Exception e) {
+                Log.d("SignupActivity", " error");
+            }
+            finally {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            if (img != null){
+                ImageView view = (ImageView)findViewById(R.id.fullscreen_content);
+                view.setImageBitmap(img);
+            }
+            if (btn != null){
+                ImageView view = (ImageView)findViewById(R.id.email_sign_in_button);
+                view.setImageBitmap(btn);
+            }
+        }
     }
 
     private void populateAutoComplete() {
@@ -163,12 +216,21 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            hideSoftKeyboard();
             showProgress(true);
             mAuthTask = new UserLoginTask(email, name);
             //mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers?email="+email+"name="+name);
             mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers");
         }
     }
+
+    public void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
@@ -254,7 +316,6 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
 
@@ -319,6 +380,10 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
                 Log.d("IOException: ", e.getMessage());
                 //TODO Handle problems..
             }
+            finally {
+                // temp fix
+                showThankyou();
+            }
             return responseString;
         }
 
@@ -331,48 +396,10 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             mAuthTask = null;
             showProgress(false);
 
-                finish();
+            showThankyou();
+
+            //finish();
         }
-
-
-
-
-       /* @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt a REST call against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mName);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }*/
-
-       /* @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                // TODO: LOG error
-                //mPasswordView.setError(getString(R.string.error_incorrect_password));
-                //mPasswordView.requestFocus();
-            }
-        }*/
 
         @Override
         protected void onCancelled() {
@@ -381,6 +408,3 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         }
     }
 }
-
-
-
