@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#0099cc"
+    android:windowActionBar="false"
     android:orientation="vertical"
     android:keepScreenOn="true"
     tools:context=".WelcomeActivity">
@@ -13,23 +13,11 @@
     <ImageView android:id="@+id/fullscreen_content"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textStyle="bold"
-        android:textSize="50sp"
         android:gravity="center"
         android:clickable="true"
-        android:longClickable="true" />
-    <!--android:src="@drawable/cook"-->
-
-    <!--TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:text="@string/welcome_note"
-        android:id="@+id/textView"
-        android:paddingTop="100dp"
-        android:gravity="center"/-->
+        android:longClickable="true"
+        android:src="@drawable/splash_screen_image"
+        android:scaleType="center" />
 
     <Button
         android:layout_width="match_parent"
@@ -42,39 +30,8 @@
         android:gravity="center|center_horizontal"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
         android:textSize="30dp" />
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-<!--    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:clickable="true">
-
-        <LinearLayout android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
-
-            <Button android:id="@+id/signup_button"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/signup_button"
-                android:clickable="true"
-                android:enabled="true"
-                android:focusable="true"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-    </FrameLayout> -->
 
 </FrameLayout>

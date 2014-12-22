@@ -9,7 +9,5 @@
     <string name="error_invalid_name">Please enter a valid name</string>
     <string name="welcome_note">Get Our Great Weekly Deals and Specials</string>
     <string name="title_activity_thank_you">ThankYou</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,8 +57,9 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_welcome);
-        resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
-        loadResources();
+
+        /*resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
+        loadResources();*/
 
         final View contentView = findViewById(R.id.fullscreen_content);
         final View emailButton =  findViewById(R.id.enter_email_button);
@@ -67,14 +67,14 @@ public class WelcomeActivity extends Activity {
         contentView.setOnClickListener(mClickListener);
         emailButton.setOnClickListener(mClickListener);
 
-        contentView.setOnLongClickListener(mLongClickListener);
-        emailButton.setOnLongClickListener(mLongClickListener);
+        /*contentView.setOnLongClickListener(mLongClickListener);
+        emailButton.setOnLongClickListener(mLongClickListener);*/
     }
 
     @Override
     protected void onResume(){
         super.onResume();
-        // TODO: Check if resource URL was changed. Reload the
+        // TODO: Check if resource URL was changed. Reload the images
     }
 
     private void loadResources(){

@@ -9,13 +9,10 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,7 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -39,8 +35,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,12 +63,12 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
-        loadResources();
+        /*resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
+        loadResources();*/
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        //populateAutoComplete();
 
         //mPasswordView = (EditText) findViewById(R.id.password);
         mNameView = (EditText) findViewById(R.id.name);
@@ -122,15 +116,15 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         //finish();
     }
 
-    private void loadResources(){
+    /*private void loadResources(){
         new LoadResources().execute();
-    }
+    }*/
 
     public void onClick(View view) {
         attemptLogin();
     }
 
-    private class LoadResources extends AsyncTask<Void, Void, Void> {
+    /*private class LoadResources extends AsyncTask<Void, Void, Void> {
         Bitmap img;
         Bitmap btn;
         @Override
@@ -161,7 +155,7 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
                 view.setImageBitmap(btn);
             }
         }
-    }
+    }*/
 
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);

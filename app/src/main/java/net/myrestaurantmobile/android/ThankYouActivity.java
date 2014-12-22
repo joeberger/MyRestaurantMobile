@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -57,8 +56,9 @@ public class ThankYouActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_thank_you);
-        resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
-        loadResources();
+
+        /*resourceUrl = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("resource_url", "");
+        loadResources();*/
     }
 
     @Override
