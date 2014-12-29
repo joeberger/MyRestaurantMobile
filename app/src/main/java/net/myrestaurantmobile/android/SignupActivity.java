@@ -213,8 +213,10 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             hideSoftKeyboard();
             showProgress(true);
             mAuthTask = new UserLoginTask(email, name);
-            //mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers?email="+email+"name="+name);
-            mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers");
+            //https://api.sendgrid.com/apiv2/customer.add.json
+            //mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers");
+            mAuthTask.execute("https://api.sendgrid.com/apiv2/customer.add.json");
+
         }
     }
 
@@ -340,15 +342,24 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
         protected String doInBackground(String... uri) {
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
-            //HttpParams httpParams;
+            //HttpParams httpParams = null;
             //httpParams.setParameter("name", this.mName);
             //httpParams.setParameter("email", this.mEmail);
             HttpPost mPost = new HttpPost(uri[0]);
 
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-            pairs.add(new BasicNameValuePair("name", this.mName));
+            pairs.add(new BasicNameValuePair("api_user", ""));
+            pairs.add(new BasicNameValuePair("api_key", ""));
+
+            pairs.add(new BasicNameValuePair("username", this.mName));
             pairs.add(new BasicNameValuePair("email", this.mEmail));
 
+            /*
+            or do it this way:
+            RequestParams params = new RequestParams();
+            params.put("username", email);
+            ...
+             */
             String responseString = null;
             try {
                 //response = httpclient.execute(new HttpGet(uri[0]));

@@ -1,18 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"  android:windowActionBar="false"
-
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:windowActionBar="false"
     android:keepScreenOn="true"
-    tools:context="net.myrestaurantmobile.android.ThankYouActivity">
+    tools:context=".ThankYouActivity">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
-    <ImageView android:id="@+id/fullscreen_content" android:layout_width="fill_parent"
+    <ImageView android:id="@+id/fullscreen_content"
+        android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
         android:src="@drawable/thank_you"
-        android:scaleType="center"
-        android:background="#ffffffff" />
-
-</RelativeLayout>
+        android:scaleType="fitXY"
+        android:background="#ffffffff"
+        android:contentDescription="Thank You" />
+</FrameLayout>

@@ -5,7 +5,8 @@
     android:windowActionBar="false"
     android:orientation="vertical"
     android:keepScreenOn="true"
-    tools:context=".WelcomeActivity">
+    tools:context=".WelcomeActivity"
+    android:background="@android:color/transparent">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -17,21 +18,19 @@
         android:clickable="true"
         android:longClickable="true"
         android:src="@drawable/splash_screen_image"
-        android:scaleType="center" />
+        android:scaleType="fitXY" />
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginBottom="80dp"
-        android:text="Please Enter Your Email"
+        android:layout_width="306dp"
+        android:layout_height="93dp"
+        android:layout_marginBottom="30dp"
         android:id="@+id/enter_email_button"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="#ffae0412"
+        android:layout_gravity="center|bottom"
+        android:background="@drawable/get_rewards_button"
         android:gravity="center|center_horizontal"
         android:clickable="true"
         android:focusable="true"
         android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:textSize="30dp" />
+        android:layout_marginRight="22dp" />
 
 </FrameLayout>

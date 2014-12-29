@@ -95,7 +95,7 @@ public class ThankYouActivity extends Activity {
     }
 
     protected void goToWelcome(){
-        new CountDownTimer(4000, 1000) {
+        new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
             }
 
