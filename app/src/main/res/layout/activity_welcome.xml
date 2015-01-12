@@ -21,12 +21,12 @@
         android:scaleType="fitXY" />
 
     <Button
-        android:layout_width="306dp"
-        android:layout_height="93dp"
+        android:layout_width="410dp"
+        android:layout_height="153dp"
         android:layout_marginBottom="30dp"
         android:id="@+id/enter_email_button"
         android:layout_gravity="center|bottom"
-        android:background="@drawable/get_rewards_button"
+        android:background="@drawable/enter_email_button"
         android:gravity="center|center_horizontal"
         android:clickable="true"
         android:focusable="true"

@@ -38,7 +38,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:paddingBottom="5dp"
-            android:layout_marginTop="470dp"
+            android:layout_marginTop="530dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
             android:textSize="38dp"
@@ -59,7 +59,7 @@
             android:paddingBottom="5dp"
             android:layout_marginLeft="60dp"
             android:layout_marginRight="60dp"
-            android:layout_marginTop="540dp"
+            android:layout_marginTop="600dp"
             android:textSize="38dp"
             android:textStyle="bold"
             android:textColor="@color/black_overlay"
@@ -73,7 +73,7 @@
             android:contentDescription="@string/signupButtonDescription"
             android:layout_gravity="center_horizontal"
             android:onClick="onClick"
-            android:layout_marginTop="620dp"
+            android:layout_marginTop="650dp"
             android:src="@drawable/enter_email_button"
             android:background="@android:color/transparent" />
 

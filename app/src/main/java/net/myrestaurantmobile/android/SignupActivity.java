@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -32,11 +33,14 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -56,6 +60,7 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
     private EditText mNameView;
     private View mProgressView;
     private View mLoginFormView;
+    private View emailField;
     private String resourceUrl;
 
     @Override
@@ -93,6 +98,34 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        emailField = (EditText) findViewById(R.id.email);
+
+        emailField.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    attemptLogin();
+                }
+                return false;
+            }
+        });
+
+
+
+           /*     .setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    // do your stuff here
+                }
+                return false;
+            }
+        });
+        */
+
+
+
     }
 
     @Override
@@ -215,7 +248,7 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             mAuthTask = new UserLoginTask(email, name);
             //https://api.sendgrid.com/apiv2/customer.add.json
             //mAuthTask.execute("https://api.aweber.com/1.0/accounts/aw34552422/lists/JoesPizzaPhila/subscribers");
-            mAuthTask.execute("https://api.sendgrid.com/apiv2/customer.add.json");
+            mAuthTask.execute("https://api.sendgrid.com/api/newsletter/lists/email/add.json");
 
         }
     }
@@ -340,6 +373,8 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
 
         @Override
         protected String doInBackground(String... uri) {
+
+    // Add user to the list
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response;
             //HttpParams httpParams = null;
@@ -348,11 +383,22 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
             HttpPost mPost = new HttpPost(uri[0]);
 
             List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-            pairs.add(new BasicNameValuePair("api_user", ""));
-            pairs.add(new BasicNameValuePair("api_key", ""));
+            pairs.add(new BasicNameValuePair("api_user", "MenusForLess"));
+            pairs.add(new BasicNameValuePair("api_key", "MenusTest123"));
 
-            pairs.add(new BasicNameValuePair("username", this.mName));
-            pairs.add(new BasicNameValuePair("email", this.mEmail));
+            pairs.add(new BasicNameValuePair("list", "Wendys"));
+
+            Map data = new HashMap();
+            data.put("name", this.mName);
+            data.put("email", this.mEmail);
+
+            JSONObject obj=new JSONObject(data);
+            pairs.add(new BasicNameValuePair("data", obj.toString()));
+
+            //{"email":"address@domain.com","name":"contactName"}
+
+            //pairs.add(new BasicNameValuePair("username", this.mName));
+            //pairs.add(new BasicNameValuePair("email", this.mEmail));
 
             /*
             or do it this way:
@@ -373,6 +419,27 @@ public class SignupActivity extends Activity implements LoaderCallbacks<Cursor>{
                     response.getEntity().writeTo(out);
                     out.close();
                     responseString = out.toString();
+
+
+
+                    // Send welcome email
+                    // with a template: f99c391a-c5df-4ec3-93fa-3e903fd9f7dc
+
+                    pairs.add(new BasicNameValuePair("to", this.mEmail));
+                    pairs.add(new BasicNameValuePair("toname", this.mName));
+                    pairs.add(new BasicNameValuePair("from", "rewards@werewardu.com"));
+
+                    pairs.add(new BasicNameValuePair("subject", "Great Success"));
+                    pairs.add(new BasicNameValuePair("text", "Welcome!!!"));
+
+                    HttpPost zPost = new HttpPost("https://api.sendgrid.com/api/mail.send.json");
+                    zPost.setEntity(new UrlEncodedFormEntity(pairs));
+                    response = httpclient.execute(zPost);
+                    statusLine = response.getStatusLine();
+                    if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                        Log.d("getStatusCode: ", "Got Back with 200!!!");
+                    }
+
                 } else{
                     //Closes the connection.
                     response.getEntity().getContent().close();
